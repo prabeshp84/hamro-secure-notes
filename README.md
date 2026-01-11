@@ -70,7 +70,7 @@ The easiest way to run the application is using **Docker**. This spins up the Fr
 ## 💻 Installation (Manual Method)
 If you prefer running it without Docker:
 
-### 1. Setup Backend
-```bash
-cd backend
-npm install
+## 🔄 CI/CD Pipeline
+This project is set up for continuous integration.
+* **Build:** Automated builds run on every push to `main`.
+* **Security Audit:** `npm audit` runs automatically to check for vulnerable dependencies.
