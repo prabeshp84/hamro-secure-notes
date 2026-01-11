@@ -1,0 +1,4 @@
+body { font-family: Inter, system-ui, Arial; padding: 16px; color:#222; }
+input, textarea { width:100%; padding:8px; margin:6px 0; border:1px solid #ddd; border-radius:6px; }
+button { padding:8px 12px; border-radius:6px; }
+pre { white-space:pre-wrap; }
