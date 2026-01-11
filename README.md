@@ -17,7 +17,7 @@
 
 1.  **Clone the Repository**
     ```bash
-    git clone [https://github.com/yourusername/hamro-secure-notes.git](https://github.com/yourusername/hamro-secure-notes.git)
+    git clone https://github.com/prabeshp84/hamro-secure-notes
     cd hamro-secure-notes
     ```
 
