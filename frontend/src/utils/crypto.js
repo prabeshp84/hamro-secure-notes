@@ -4,7 +4,6 @@ const toBase64 = (buff) => btoa(String.fromCharCode(...new Uint8Array(buff)));
 const toBuffer = (b64) => Uint8Array.from(atob(b64), c => c.charCodeAt(0));
 
 // --- 1. PKI: KEY MANAGEMENT (RSA-PSS) ---
-
 export const generateKeyPair = async () => {
   return await window.crypto.subtle.generateKey(
     {
@@ -38,7 +37,6 @@ export const importKey = async (keyB64, type) => {
 };
 
 // --- 2. DIGITAL SIGNATURES ---
-
 export const signData = async (text, privateKey) => {
   const enc = new TextEncoder();
   const signature = await window.crypto.subtle.sign(
@@ -65,7 +63,6 @@ export const verifySignature = async (text, signatureB64, publicKey) => {
 };
 
 // --- 3. HYBRID ENCRYPTION (AES-GCM + PBKDF2) ---
-
 export const deriveKey = async (password, saltBuffer) => {
   const enc = new TextEncoder();
   const salt = saltBuffer || window.crypto.getRandomValues(new Uint8Array(16));
@@ -103,15 +100,12 @@ export const decryptData = async (encryptedObj, password) => {
     const salt = toBuffer(encryptedObj.salt);
     const iv = toBuffer(encryptedObj.iv);
     const ciphertext = toBuffer(encryptedObj.ciphertext);
-    
     const { key } = await deriveKey(password, salt);
-    
     const decrypted = await window.crypto.subtle.decrypt(
       { name: "AES-GCM", iv }, 
       key, 
       ciphertext
     );
-    
     return new TextDecoder().decode(decrypted);
   } catch (e) {
     throw new Error("Decryption Failed");

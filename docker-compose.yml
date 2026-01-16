@@ -1,24 +1,29 @@
 version: '3.8'
 
 services:
+ 
   mongo:
-    image: mongo
+    image: mongo:latest
+    container_name: hamro_db
     ports:
-      - "27017:27017"
+      - "27018:27017"
     volumes:
       - mongo-data:/data/db
+
 
   backend:
     build: ./backend
     ports:
       - "5000:5000"
     environment:
-      - MONGO_URI=mongodb+srv://230531_db_user:Q7f2o3EGCtkzuK72@notes.vafejnl.mongodb.net/
-      - JWT_SECRET=harharmahadev
+  
+      - MONGO_URI=mongodb://mongo:27017/hamro_vault
+      - JWT_SECRET=supersecretkey123
       - PORT=5000
     depends_on:
       - mongo
 
+  # 3. Frontend UI
   frontend:
     build: ./frontend
     ports:

@@ -1,5 +1,3 @@
-console.log("...Attempting to start server...");
-
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -22,9 +20,8 @@ mongoose.connect(process.env.MONGO_URI)
 const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
-  // NEW: Store the User's Digital Identity (Keys)
   publicKey: { type: String },  
-  privateKey: { type: String }
+  privateKey: { type: String } // Encrypted Blob
 });
 
 const NoteSchema = new mongoose.Schema({
@@ -51,25 +48,20 @@ const authenticate = (req, res, next) => {
 };
 
 // --- Routes ---
-
-// 1. Register (Updated to Save Keys)
 app.post('/api/register', async (req, res) => {
   try {
-    const { email, password, publicKey, privateKey } = req.body; // Accept keys from frontend
+    const { email, password, publicKey, privateKey } = req.body;
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
-    
-    // Store keys along with user
+    // Store the encrypted private key blob
     await User.create({ email, passwordHash, publicKey, privateKey });
-    
     res.status(201).json({ message: "User created" });
   } catch (err) {
-    console.error(err);
+    console.error("❌ REGISTER ERROR:", err);
     res.status(400).json({ error: "User already exists or Error" });
   }
 });
 
-// 2. Login (Updated to Return Keys)
 app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -78,19 +70,14 @@ app.post('/api/login', async (req, res) => {
       return res.status(400).json({ error: "Invalid credentials" });
     }
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '2h' });
-    
-    // Send the stored keys back to the client
-    res.json({ 
-      token, 
-      publicKey: user.publicKey, 
-      privateKey: user.privateKey 
-    });
+    // Send back keys so client can unwrap them
+    res.json({ token, publicKey: user.publicKey, privateKey: user.privateKey });
   } catch (e) {
+    console.error("LOGIN CRASH:", e);
     res.status(500).json({ error: "Server Error" });
   }
 });
 
-// 3. Save Encrypted Note
 app.post('/api/notes', authenticate, async (req, res) => {
   try {
     const { title, ciphertext, iv, salt, signature } = req.body;
@@ -108,17 +95,14 @@ app.post('/api/notes', authenticate, async (req, res) => {
   }
 });
 
-// 4. Get Encrypted Notes
 app.get('/api/notes', authenticate, async (req, res) => {
   const notes = await Note.find({ owner: req.user._id }).sort({ createdAt: -1 });
   res.json(notes);
 });
 
-// 5. Delete Note
 app.delete('/api/notes/:id', authenticate, async (req, res) => {
   try {
-    const note = await Note.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
-    if (!note) return res.status(404).json({ error: "Note not found or access denied" });
+    await Note.findOneAndDelete({ _id: req.params.id, owner: req.user._id });
     res.json({ message: "Note deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
