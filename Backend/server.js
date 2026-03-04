@@ -77,9 +77,16 @@ const apiLimiter = rateLimit({
 
 app.use("/api", apiLimiter);
 
+const requireFields = (fields, body) => {
+  const missing = fields.filter((f) => body[f] === undefined || body[f] === null || body[f] === "");
+  return missing;
+};
+
 // --- Routes ---
 app.post('/api/register', async (req, res) => {
   try {
+    const missing = requireFields(["email", "password", "publicKey", "privateKey"], req.body);
+    if (missing.length) return res.status(400).json({ error: `Missing: ${missing.join(", ")}` });
     const { email, password, publicKey, privateKey } = req.body;
     const salt = await bcrypt.genSalt(10);
     const passwordHash = await bcrypt.hash(password, salt);
@@ -94,6 +101,8 @@ app.post('/api/register', async (req, res) => {
 
 app.post('/api/login', async (req, res) => {
   try {
+    const missing = requireFields(["email", "password"], req.body);
+    if (missing.length) return res.status(400).json({ error: `Missing: ${missing.join(", ")}` });
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user || !await bcrypt.compare(password, user.passwordHash)) {
@@ -110,6 +119,8 @@ app.post('/api/login', async (req, res) => {
 
 app.post('/api/notes', authenticate, async (req, res) => {
   try {
+    const missing = requireFields(["ciphertext", "iv", "salt"], req.body);
+    if (missing.length) return res.status(400).json({ error: `Missing: ${missing.join(", ")}` });
     const { title, ciphertext, iv, salt, signature } = req.body;
     const note = await Note.create({
       owner: req.user._id,
