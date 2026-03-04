@@ -110,7 +110,12 @@ app.post('/api/login', async (req, res) => {
     }
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '2h' });
     // Send back keys so client can unwrap them
-    res.json({ token, publicKey: user.publicKey, privateKey: user.privateKey });
+    const includeKeys = req.query.includeKeys === "true";
+    res.json({
+      token,
+      publicKey: user.publicKey,
+      privateKey: includeKeys ? user.privateKey : undefined
+    });
   } catch (e) {
     console.error("LOGIN CRASH:", e);
     res.status(500).json({ error: "Server Error" });
