@@ -1,295 +1,155 @@
-🔐 Hamro Secure Notes
+# 📝 Hamro Secure Notes
 
+> A full-stack secure notes application with end-to-end encryption, built for privacy-first personal note management.
 
+![Status](https://img.shields.io/badge/status-in%20progress-yellow)
+![Stack](https://img.shields.io/badge/stack-React%20%7C%20Node.js%20%7C%20MongoDB-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
 
+---
 
+## ✨ Features
 
+- 🔐 **End-to-End Encrypted Notes** — Your notes are encrypted before storage, ensuring only you can read them
+- 🔑 **User Authentication** — Secure sign-up and login with JWT-based session management
+- 📋 **Full CRUD Support** — Create, read, update, and delete notes with ease
+- 🏷️ **Tags & Categories** — Organize your notes using custom tags and categories for quick retrieval
 
+---
 
+## 🛠️ Tech Stack
 
+| Layer      | Technology             |
+|------------|------------------------|
+| Frontend   | React                  |
+| Backend    | Node.js, Express.js    |
+| Database   | MongoDB                |
+| Auth       | JWT (JSON Web Tokens)  |
 
+---
 
+## 🚀 Getting Started
 
+### Prerequisites
 
-A secure encrypted note vault built using modern cryptography, secure authentication, and DevOps practices.
+Make sure you have the following installed:
 
-Hamro Secure Notes ensures that user data remains confidential, authenticated, and tamper-proof by performing client-side encryption before storage.
+- [Node.js](https://nodejs.org/) (v16+)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- [MongoDB](https://www.mongodb.com/) (local or Atlas)
 
-This project demonstrates secure full-stack development combining:
+### Installation
 
-Cryptography
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/prabeshp84/hamro-secure-notes.git
+   cd hamro-secure-notes
+   ```
 
-Secure API design
+2. **Install backend dependencies**
+   ```bash
+   cd server
+   npm install
+   ```
 
-Authentication systems
+3. **Install frontend dependencies**
+   ```bash
+   cd ../client
+   npm install
+   ```
 
-Containerized deployment
+4. **Set up environment variables**
 
-Continuous Integration
+   Create a `.env` file in the `server/` directory:
+   ```env
+   PORT=5000
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret_key
+   ENCRYPTION_KEY=your_encryption_key
+   ```
 
-📌 Key Features
-🔐 End-to-End Encryption
+5. **Run the development servers**
 
-All notes are encrypted in the browser before being sent to the server.
+   In one terminal (backend):
+   ```bash
+   cd server
+   npm run dev
+   ```
 
-The backend never stores plaintext data.
+   In another terminal (frontend):
+   ```bash
+   cd client
+   npm start
+   ```
 
-🧾 Digital Signature Verification
+6. **Open the app**
+   ```
+   http://localhost:3000
+   ```
 
-Every note is digitally signed using the user’s private key.
+---
 
-This allows:
+## 📁 Project Structure
 
-integrity verification
-
-tamper detection
-
-🔑 Secure Authentication
-
-The application uses:
-
-bcrypt password hashing
-
-JWT token authentication
-
-secure API authorization
-
-🛡️ Security Hardening
-
-The backend includes multiple defensive layers:
-
-helmet security headers
-
-express-rate-limit
-
-environment validation
-
-protected API routes
-
-🏗️ System Architecture
-User Browser
-      │
-      │ HTTPS
-      ▼
-Frontend (React + Web Crypto API)
-      │
-      │ Encrypted Notes
-      ▼
-Backend API (Node.js + Express)
-      │
-      ▼
-MongoDB Database
-
-Encryption occurs client-side, ensuring that sensitive data never appears in plaintext on the server.
-
-⚙️ Technology Stack
-Frontend
-
-React
-
-Vite
-
-Web Crypto API
-
-CSS
-
-Backend
-
-Node.js
-
-Express.js
-
-MongoDB
-
-Mongoose
-
-Security
-
-bcrypt
-
-JSON Web Tokens (JWT)
-
-Web Crypto API
-
-helmet
-
-express-rate-limit
-
-DevOps
-
-Docker
-
-Docker Compose
-
-GitHub Actions CI/CD
-
-📂 Project Structure
-hamro-secure-notes
-│
-├── backend
-│   ├── server.js
-│   ├── package.json
-│   └── Dockerfile
-│
-├── frontend
-│   ├── src
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── utils
-│   │       └── crypto.js
-│   ├── package.json
-│   └── Dockerfile
-│
-├── .github
-│   └── workflows
-│       └── ci.yml
-│
-├── docker-compose.yml
-├── .env.example
+```
+hamro-secure-notes/
+├── client/              # React frontend
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   └── App.jsx
+│   └── package.json
+├── server/              # Node.js + Express backend
+│   ├── routes/
+│   ├── models/
+│   ├── middleware/
+│   └── index.js
 └── README.md
-🚀 Quick Start
-1️⃣ Clone the Repository
-git clone https://github.com/prabeshp84/hamro-secure-notes.git
-cd hamro-secure-notes
-⚙️ Environment Setup
+```
 
-Create a .env file inside the backend directory.
+---
 
-Example:
+## 🔒 Security
 
-MONGO_URI=mongodb://mongo:27017/hamro_vault
-JWT_SECRET=supersecretkey
-PORT=5000
-CORS_ORIGIN=http://localhost:5173
-🐳 Run Using Docker
+- Notes are encrypted using strong encryption before being stored in the database
+- Passwords are hashed and never stored in plain text
+- Authentication is handled via signed JWT tokens
+- Environment variables are used for all sensitive configuration
 
-Start the entire system using Docker:
+---
 
-docker compose up --build
+## 🛣️ Roadmap
 
-Services started:
+- [x] User authentication (login/register)
+- [x] Create, edit, and delete notes
+- [x] Note encryption
+- [x] Tags and categories
+- [ ] Search functionality
+- [ ] Dark mode
+- [ ] Mobile responsive UI
+- [ ] Export notes as PDF
 
-Service	Port
-Frontend	5173
-Backend	5000
-MongoDB	27017
-🧪 Local Development
-Backend
-cd backend
-npm install
-npm start
-Frontend
-cd frontend
-npm install
-npm run dev
+---
 
-Application will run at:
+## 🤝 Contributing
 
-http://localhost:5173
-🔁 Continuous Integration
+Contributions are welcome! Feel free to open an issue or submit a pull request.
 
-The project includes a GitHub Actions CI pipeline that automatically:
+1. Fork the repo
+2. Create your feature branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m 'Add your feature'`
+4. Push to the branch: `git push origin feature/your-feature`
+5. Open a Pull Request
 
-installs dependencies
+---
 
-builds the frontend
+## 📄 License
 
-tests backend services
+This project is licensed under the [MIT License](LICENSE).
 
-CI workflow location:
+---
 
-.github/workflows/ci.yml
+## 👤 Author
 
-Triggered on:
-
-push
-pull_request
-🔐 Security Model
-Security Layer	Implementation
-Client encryption	Web Crypto API
-Password hashing	bcrypt
-Authentication	JWT
-Secure headers	helmet
-API protection	express-rate-limit
-🧪 API Endpoints
-Register
-POST /api/register
-
-Creates a new encrypted user identity.
-
-Login
-POST /api/login
-
-Authenticates the user and returns a JWT token.
-
-Create Note
-POST /api/notes
-
-Stores encrypted note data.
-
-Get Notes
-GET /api/notes
-
-Retrieves encrypted notes belonging to the user.
-
-Update Note
-PATCH /api/notes/:id
-
-Updates encrypted note content.
-
-Delete Note
-DELETE /api/notes/:id
-
-Deletes a stored note.
-
-Health Check
-GET /health
-
-Used by monitoring and container health checks.
-
-🧑‍💻 DevOps Practices
-
-This repository demonstrates modern DevOps engineering practices:
-
-containerized application deployment
-
-reproducible infrastructure
-
-CI/CD automation
-
-environment-based configuration
-
-📈 Future Improvements
-
-Planned enhancements include:
-
-Multi-factor authentication
-
-Key rotation mechanisms
-
-Hardware Security Module integration
-
-Kubernetes deployment
-
-secrets management with Vault
-
-👨‍💻 Author
-
-Prabesh Paudel
-
-Cybersecurity Student
-Coventry University
-
-🤝 Contributing
-
-Contributions are welcome.
-
-Fork the repository
-
-Create a feature branch
-
-Submit a pull request
-
-📜 License
-
-This project is licensed under the MIT License.
+**Prabesh**  
+GitHub: [@prabeshp84](https://github.com/prabeshp84)
