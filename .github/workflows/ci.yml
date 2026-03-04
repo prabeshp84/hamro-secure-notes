@@ -22,15 +22,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
-          cache-dependency-path: |
-            Backend/package-lock.json
-            frontend/package-lock.json
+          # FIX: Removed cache-dependency-path — package-lock.json files
+          # are generated on npm install, not committed to the repo
 
       # Backend
       - name: Install Backend deps
         working-directory: Backend
-        run: npm ci
+        run: npm install
 
       - name: Test Backend
         working-directory: Backend
@@ -39,8 +37,8 @@ jobs:
       # Frontend
       - name: Install Frontend deps
         working-directory: frontend
-        run: npm ci
+        run: npm install
 
       - name: Build Frontend
         working-directory: frontend
-        run: npm run build --if-present
+        run: npm run build
