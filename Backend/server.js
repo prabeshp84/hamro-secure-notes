@@ -61,7 +61,7 @@ const Note = mongoose.model('Note', NoteSchema);
 const authenticate = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) return res.sendStatus(401);
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+  jwt.verify(token, process.env.JWT_SECRET, { issuer: "hamro-secure-notes" }, (err, user) => {
     if (err) return res.sendStatus(403);
     req.user = user;
     next();
@@ -108,7 +108,15 @@ app.post('/api/login', async (req, res) => {
     if (!user || !await bcrypt.compare(password, user.passwordHash)) {
       return res.status(400).json({ error: "Invalid credentials" });
     }
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: '2h' });
+    const token = jwt.sign(
+      { _id: user._id },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "2h",
+        algorithm: "HS256",
+        issuer: "hamro-secure-notes"
+      }
+    );
     // Send back keys so client can unwrap them
     const includeKeys = req.query.includeKeys === "true";
     res.json({
