@@ -162,6 +162,28 @@ app.delete('/api/notes/:id', authenticate, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+app.patch('/api/notes/:id', authenticate, async (req, res) => {
+  try {
+    const { title, ciphertext, iv, salt, signature } = req.body;
+
+    const updated = await Note.findOneAndUpdate(
+      { _id: req.params.id, owner: req.user._id },
+      {
+        ...(title !== undefined && { title }),
+        ...(ciphertext !== undefined && { ciphertext }),
+        ...(iv !== undefined && { iv }),
+        ...(salt !== undefined && { salt }),
+        ...(signature !== undefined && { signature }),
+      },
+      { new: true } // return updated note
+    );
+
+    if (!updated) return res.status(404).json({ error: "Note not found" });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
