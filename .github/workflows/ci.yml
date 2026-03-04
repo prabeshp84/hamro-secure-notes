@@ -9,34 +9,34 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [18.x]
+
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    
-    # Backend
-    - name: Install Backend
-      run: |
-        cd backend
-        npm install
-    - name: Test Backend
-      run: |
-        cd backend
-        npm test
-        
-    # Frontend
-    - name: Install Frontend
-      run: |
-        cd frontend
-        npm install
-    - name: Build Frontend
-      run: |
-        cd frontend
-        npm run build --if-present
-        
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Backend
+      - name: Install Backend deps
+        working-directory: Backend
+        run: npm ci
+
+      - name: Test Backend
+        working-directory: Backend
+        run: npm test --if-present
+
+      # Frontend
+      - name: Install Frontend deps
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build Frontend
+        working-directory: frontend
+        run: npm run build --if-present
