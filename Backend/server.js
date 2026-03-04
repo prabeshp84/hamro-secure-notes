@@ -24,6 +24,16 @@ app.use(cors({
 }));
 app.use(helmet());
 
+// --- Rate Limiting ---
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200,                 // requests per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use("/api", apiLimiter);
+
 // --- Required Environment Validation ---
 const requiredEnvs = ["MONGO_URI", "JWT_SECRET"];
 const missing = requiredEnvs.filter((k) => !process.env[k]);
@@ -119,6 +129,7 @@ app.post('/api/login', async (req, res) => {
     );
     // Send back keys so client can unwrap them
     const includeKeys = req.query.includeKeys === "true";
+    const rateLimit = require("express-rate-limit");
     res.json({
       token,
       publicKey: user.publicKey,
