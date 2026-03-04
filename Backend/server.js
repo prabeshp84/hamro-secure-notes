@@ -11,6 +11,14 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 
+// --- Required Environment Validation ---
+const requiredEnvs = ["MONGO_URI", "JWT_SECRET"];
+const missing = requiredEnvs.filter((k) => !process.env[k]);
+
+if (missing.length) {
+  console.error(`❌ Missing environment variables: ${missing.join(", ")}`);
+  process.exit(1);
+}
 // --- Database Connection ---
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
