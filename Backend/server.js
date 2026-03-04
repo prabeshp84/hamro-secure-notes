@@ -157,5 +157,12 @@ app.get("/health", (req, res) => {
 const rateLimit = require("express-rate-limit");
 
 const PORT = process.env.PORT || 5000;
+
+// --- Global Error Handler ---
+app.use((err, req, res, next) => {
+  console.error("❌ Unhandled Error:", err.message);
+  res.status(500).json({ error: "Internal Server Error" });
+});
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
 
