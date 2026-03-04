@@ -1,148 +1,295 @@
-# 🔒 Hamro Secured Notes v2.0
+🔐 Hamro Secure Notes
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![Docker](https://img.shields.io/badge/docker-containerized-blue)
-![Security](https://img.shields.io/badge/security-E2EE%20%7C%20RSA--PSS-red)
-![License](https://img.shields.io/badge/license-MIT-green)
 
-**Hamro Secured Notes** is a secure, end-to-end encrypted (E2EE) note-taking application designed to demonstrate military-grade cryptographic principles. It features client-side encryption, digital signatures for integrity, and a fully containerized microservices architecture.
 
----
 
-## 📋 Requirements Fulfillment Matrix
-This project was built to strictly satisfy the following assignment requirements:
 
-| Requirement Category | Implementation Details |
-| :--- | :--- |
-| **Core Cryptography** | • **Key Management:** Client-side generation of RSA-4096 key pairs.<br>• **Encryption:** AES-GCM (256-bit) for notes; RSA-OAEP for key exchange.<br>• **Digital Signatures:** RSA-PSS used to sign every note for non-repudiation. |
-| **Security Best Practices** | • **Secure Key Storage:** Private keys are encrypted (AES-256 via PBKDF2) before storage.<br>• **Attack Mitigation:** Unique IVs prevent replay attacks; Signatures prevent tampering/MITM. |
-| **Architecture** | • **Dockerized:** Isolated containers for Frontend, Backend, and MongoDB.<br>• **CI/CD:** GitHub Actions workflow included for automated testing. |
-| **Testing** | • **Attack Simulation:** UI actively detects and rejects tampered data from the database. |
 
----
 
-## 🏗️ Architecture
 
-The system uses a **Microservices Architecture** orchestrated via Docker Compose:
 
-graph TD
-    Client[React Frontend] <-->|Encrypted JSON| API[Node.js Backend]
-    API <-->|Persistent Volume| DB[(MongoDB)]
-    
-    subgraph "Docker Network"
-        API
-        DB
-    end
 
-🔐 Security Mechanisms
-1. Hybrid Encryption (Confidentiality)
-We use a hybrid approach for speed and security:
 
-Data: Encrypted using AES-GCM (Galois/Counter Mode).
 
-Keys: The AES key is generated randomly for each note, then encrypted using the user's RSA Public Key.
+A secure encrypted note vault built using modern cryptography, secure authentication, and DevOps practices.
 
-2. Digital Signatures (Integrity & Non-Repudiation)
-Every note is signed using the user's RSA Private Key (scheme: RSA-PSS).
+Hamro Secure Notes ensures that user data remains confidential, authenticated, and tamper-proof by performing client-side encryption before storage.
 
-Verification: When a note is loaded, the frontend verifies the signature against the public key.
+This project demonstrates secure full-stack development combining:
 
-Result: If a database admin or hacker modifies the encrypted blob, the signature verification fails, and the app alerts the user.
+Cryptography
 
-3. Identity Management
-On registration, crypto.subtle generates an RSA Keypair.
+Secure API design
 
-The Private Key is encrypted using a key derived from the user's password (PBKDF2 + Salt).
+Authentication systems
 
-The server only stores the encrypted private key.
+Containerized deployment
 
-🚀 Installation & Setup
-Prerequisites
-Docker Desktop installed and running.
+Continuous Integration
 
-Git.
+📌 Key Features
+🔐 End-to-End Encryption
 
-Steps
-Clone the Repository
+All notes are encrypted in the browser before being sent to the server.
 
-Bash
+The backend never stores plaintext data.
 
-git clone [https://github.com/YOUR_USERNAME/Hamro-Secured-Notes-v2.0.git](https://github.com/YOUR_USERNAME/Hamro-Secured-Notes-v2.0.git)
-cd Hamro-Secured-Notes-v2.0
-Start the Application Run the following command to build and start all containers:
+🧾 Digital Signature Verification
 
-Bash
+Every note is digitally signed using the user’s private key.
 
-docker-compose up --build
-Access the App
+This allows:
 
-Frontend: Open http://localhost:5173 in your browser.
+integrity verification
 
-Backend API: Running at http://localhost:5000.
+tamper detection
 
-Database: Accessible via MongoDB Compass at mongodb://localhost:27018/.
+🔑 Secure Authentication
 
-📖 Usage Guide
-1. User Registration
-Click "Create Account".
+The application uses:
 
-Enter an email and password.
+bcrypt password hashing
 
-Behind the scenes: The app generates keys, encrypts your private key, and sends the public identity to the server.
+JWT token authentication
 
-2. Creating a Secure Note
-Login to the dashboard.
+secure API authorization
 
-Type a title and sensitive content.
+🛡️ Security Hardening
 
-Click "Add Note".
+The backend includes multiple defensive layers:
 
-The note is encrypted locally and sent to the database.
+helmet security headers
 
-3. Verifying Security (The "Proof")
-You can verify that the server cannot read your data:
+express-rate-limit
 
-Open MongoDB Compass.
+environment validation
 
-Connect to mongodb://localhost:27018/.
+protected API routes
 
-Navigate to hamro_vault -> notes.
+🏗️ System Architecture
+User Browser
+      │
+      │ HTTPS
+      ▼
+Frontend (React + Web Crypto API)
+      │
+      │ Encrypted Notes
+      ▼
+Backend API (Node.js + Express)
+      │
+      ▼
+MongoDB Database
 
-Observe that the ciphertext field is random gibberish (Base64), not your original text.
+Encryption occurs client-side, ensuring that sensitive data never appears in plaintext on the server.
 
-⚔️ Attack Simulation (Testing)
-To demonstrate the Integrity Check feature:
+⚙️ Technology Stack
+Frontend
 
-Create a Note: Create a note saying "Secret Data".
+React
 
-Simulate Attack:
+Vite
 
-Open MongoDB Compass.
+Web Crypto API
 
-Find the note document.
+CSS
 
-Manually edit the ciphertext string (change just one character).
+Backend
 
-Click "Update".
+Node.js
 
-Verify Defense:
+Express.js
 
-Go back to the App and refresh.
+MongoDB
 
-Try to view/decrypt that note.
+Mongoose
 
-Result: The app will display a "Signature Verification Failed" or "Decryption Error" warning, proving tampering was detected.
+Security
+
+bcrypt
+
+JSON Web Tokens (JWT)
+
+Web Crypto API
+
+helmet
+
+express-rate-limit
+
+DevOps
+
+Docker
+
+Docker Compose
+
+GitHub Actions CI/CD
+
+📂 Project Structure
+hamro-secure-notes
+│
+├── backend
+│   ├── server.js
+│   ├── package.json
+│   └── Dockerfile
+│
+├── frontend
+│   ├── src
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── utils
+│   │       └── crypto.js
+│   ├── package.json
+│   └── Dockerfile
+│
+├── .github
+│   └── workflows
+│       └── ci.yml
+│
+├── docker-compose.yml
+├── .env.example
+└── README.md
+🚀 Quick Start
+1️⃣ Clone the Repository
+git clone https://github.com/prabeshp84/hamro-secure-notes.git
+cd hamro-secure-notes
+⚙️ Environment Setup
+
+Create a .env file inside the backend directory.
+
+Example:
+
+MONGO_URI=mongodb://mongo:27017/hamro_vault
+JWT_SECRET=supersecretkey
+PORT=5000
+CORS_ORIGIN=http://localhost:5173
+🐳 Run Using Docker
+
+Start the entire system using Docker:
+
+docker compose up --build
+
+Services started:
+
+Service	Port
+Frontend	5173
+Backend	5000
+MongoDB	27017
+🧪 Local Development
+Backend
+cd backend
+npm install
+npm start
+Frontend
+cd frontend
+npm install
+npm run dev
+
+Application will run at:
+
+http://localhost:5173
+🔁 Continuous Integration
+
+The project includes a GitHub Actions CI pipeline that automatically:
+
+installs dependencies
+
+builds the frontend
+
+tests backend services
+
+CI workflow location:
+
+.github/workflows/ci.yml
+
+Triggered on:
+
+push
+pull_request
+🔐 Security Model
+Security Layer	Implementation
+Client encryption	Web Crypto API
+Password hashing	bcrypt
+Authentication	JWT
+Secure headers	helmet
+API protection	express-rate-limit
+🧪 API Endpoints
+Register
+POST /api/register
+
+Creates a new encrypted user identity.
+
+Login
+POST /api/login
+
+Authenticates the user and returns a JWT token.
+
+Create Note
+POST /api/notes
+
+Stores encrypted note data.
+
+Get Notes
+GET /api/notes
+
+Retrieves encrypted notes belonging to the user.
+
+Update Note
+PATCH /api/notes/:id
+
+Updates encrypted note content.
+
+Delete Note
+DELETE /api/notes/:id
+
+Deletes a stored note.
+
+Health Check
+GET /health
+
+Used by monitoring and container health checks.
+
+🧑‍💻 DevOps Practices
+
+This repository demonstrates modern DevOps engineering practices:
+
+containerized application deployment
+
+reproducible infrastructure
+
+CI/CD automation
+
+environment-based configuration
+
+📈 Future Improvements
+
+Planned enhancements include:
+
+Multi-factor authentication
+
+Key rotation mechanisms
+
+Hardware Security Module integration
+
+Kubernetes deployment
+
+secrets management with Vault
+
+👨‍💻 Author
+
+Prabesh Paudel
+
+Cybersecurity Student
+Coventry University
 
 🤝 Contributing
-Fork the repository.
 
-Create your feature branch (git checkout -b feature/AmazingFeature).
+Contributions are welcome.
 
-Commit your changes (git commit -m 'Add some AmazingFeature').
+Fork the repository
 
-Push to the branch (git push origin feature/AmazingFeature).
+Create a feature branch
 
-Open a Pull Request.
+Submit a pull request
 
-📄 License
-Distributed under the MIT License. See LICENSE for more information.
+📜 License
+
+This project is licensed under the MIT License.
