@@ -31,3 +31,15 @@ build/
 .vite/
 .DS_Store
 *.log
+# Environment files
+.env
+.env.local
+.env.production
+
+# Local key store (never commit!)
+# Note: localStorage is browser-side, but just in case
+*.pem
+ca_key.pem
+ca_cert.pem
+users.json
+documents.json
