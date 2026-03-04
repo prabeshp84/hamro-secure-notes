@@ -30,15 +30,65 @@
 
 ## 🚀 Getting Started
 
-### Prerequisites
+You can run Hamro Secure Notes using **Docker** (recommended) or manually.
 
-Make sure you have the following installed:
+---
+
+### 🐳 Docker Setup (Recommended)
+
+#### Prerequisites
+- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
+
+#### Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/prabeshp84/hamro-secure-notes.git
+   cd hamro-secure-notes
+   ```
+
+2. **Create a `.env` file** in the root directory:
+   ```env
+   JWT_SECRET=your_jwt_secret_key
+   MONGO_URI=mongodb://mongo:27017/hamro_vault   # optional, this is the default
+   PORT=5000                                      # optional, this is the default
+   ```
+
+3. **Build and start all services**
+   ```bash
+   docker compose up --build
+   ```
+
+   This will spin up three services:
+   | Service   | Container     | Port             |
+   |-----------|---------------|------------------|
+   | MongoDB   | `hamro_db`    | `27018` → `27017`|
+   | Backend   | —             | `5000`           |
+   | Frontend  | —             | `5173`           |
+
+4. **Open the app**
+   ```
+   http://localhost:5173
+   ```
+
+> ℹ️ Docker handles startup order automatically — the backend waits for MongoDB to be healthy, and the frontend waits for the backend.
+
+To stop all services:
+```bash
+docker compose down
+```
+
+---
+
+### 🛠️ Manual Setup
+
+#### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v16+)
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
 - [MongoDB](https://www.mongodb.com/) (local or Atlas)
 
-### Installation
+#### Steps
 
 1. **Clone the repository**
    ```bash
@@ -48,43 +98,42 @@ Make sure you have the following installed:
 
 2. **Install backend dependencies**
    ```bash
-   cd server
+   cd Backend
    npm install
    ```
 
 3. **Install frontend dependencies**
    ```bash
-   cd ../client
+   cd ../frontend
    npm install
    ```
 
 4. **Set up environment variables**
 
-   Create a `.env` file in the `server/` directory:
+   Create a `.env` file in the `Backend/` directory:
    ```env
    PORT=5000
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret_key
-   ENCRYPTION_KEY=your_encryption_key
    ```
 
 5. **Run the development servers**
 
    In one terminal (backend):
    ```bash
-   cd server
+   cd Backend
    npm run dev
    ```
 
    In another terminal (frontend):
    ```bash
-   cd client
-   npm start
+   cd frontend
+   npm run dev
    ```
 
 6. **Open the app**
    ```
-   http://localhost:3000
+   http://localhost:5173
    ```
 
 ---
@@ -93,17 +142,18 @@ Make sure you have the following installed:
 
 ```
 hamro-secure-notes/
-├── client/              # React frontend
+├── frontend/            # React frontend (Vite)
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
 │   │   └── App.jsx
 │   └── package.json
-├── server/              # Node.js + Express backend
+├── Backend/             # Node.js + Express backend
 │   ├── routes/
 │   ├── models/
 │   ├── middleware/
 │   └── index.js
+├── docker-compose.yml
 └── README.md
 ```
 
