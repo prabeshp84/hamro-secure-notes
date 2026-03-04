@@ -23,3 +23,11 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+node_modules/
+.env
+.env.*
+dist/
+build/
+.vite/
+.DS_Store
+*.log
