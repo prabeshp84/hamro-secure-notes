@@ -1,0 +1,38 @@
+[33m51aea96[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mreset/v3[m[33m, [m[1;31morigin/reset/v3[m[33m)[m feat: re-add Hamro Secure Notes with full docker + CI setup
+[33m884618f[m chore(repo): reset repository structure
+[33m54d49aa[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m feat(security): implement encrypted note update and secure authentication flow
+[33m0859e62[m fix(frontend): request keys on login and use PATCH for note updates
+[33mac499e6[m fix(backend): correct rate limiter initialization order
+[33mfba0268[m feat(backend): add update endpoint for notes
+[33mce18c12[m security(backend): harden JWT signing and verification options
+[33meb72bb0[m security(backend): return encrypted private key only when requested
+[33m7f79dca[m chore(backend): add global error handler middleware
+[33mf8fdcd3[m feat(backend): add basic request validation to key routes
+[33m0585ff0[m security(backend): add rate limiting for API endpoints
+[33m21fdaf7[m security(backend): restrict CORS origins for safer API access
+[33m102e099[m chore(backend): validate required environment variables on startup
+[33mdd1b9f1[m chore(docker): add healthchecks and env-based config
+[33me3d4c15[m feat(backend): add health check endpoint
+[33m41e0166[m chore(docker): add frontend dockerignore
+[33m4f4f915[m chore(docker): add backend dockerignore
+[33m99a1bd6[m ci: fix Backend path and improve workflow reliability
+[33m592851e[m chore: add env template for local and docker setup
+[33m3978675[m chore: harden .gitignore for node, builds, and env files
+[33mf77ef62[m ci: fix backend path and improve workflow reliability
+[33m96e76f8[m initial: structured project architecture for Hamro Secure Notes
+[33ma072ea6[m chore: reset repository for structured project setup
+[33m343d945[m ci: fix backend path and improve workflow reliability
+[33m0ec4225[m chore: ignore node_modules and build artifacts
+[33m94c9fd4[m chore: reset repository structure for clean project rebuild
+[33me4260cb[m[33m ([m[1;33mtag: [m[1;33mv3.0.0[m[33m, [m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m Update application frontend and backend logic
+[33mf1d320b[m Update README with full documentation
+[33mdc129ae[m Update README with full documentation
+[33mb4d8fdd[m Docs: Added README
+[33mf8807c3[m[33m ([m[1;33mtag: [m[1;33mv2.0[m[33m)[m Update to v2.0:
+[33m535e4e6[m Update README with final DevOps and Security documentation
+[33m7a3060b[m Update README with final DevOps and Security documentation
+[33m857ab4c[m Update .env.example
+[33m0f3e27d[m Update README.md
+[33m1335d17[m Fix: Update CI pipeline to use npm install
+[33md89fc35[m Docs: Add project documentation and usage guide
+[33m9af1803[m Initial commit: Hamro Secure Notes V1.0 - Full DevOps Setup
